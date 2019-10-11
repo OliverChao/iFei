@@ -29,5 +29,6 @@ func RegisterRouterMap() *gin.Engine {
 		m["s"] = "oliver loves annabelle~"
 
 	})
+
 	return engine
 }

@@ -15,8 +15,8 @@ import (
 )
 
 func main() {
-	//testConServer()
-	//testConDB()
+	testConServer()
+	testConDB()
 	testRedis()
 
 }
