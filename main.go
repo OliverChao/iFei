@@ -11,12 +11,13 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	//"github.com/valyala/fasthttp"
 )
 
 func init() {
 	//logrus.SetLevel(logrus.DebugLevel)
 	//iFcon := baseCon.InitIFcon()
-	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetLevel(logrus.DebugLevel)
 
 }
 
@@ -25,6 +26,7 @@ func main() {
 	//logrus.SetLevel(IFconBase.LogLevel)
 	forever.MysqlRegister()
 	forever.RedisRegister()
+	forever.LoadMarkdownEngine()
 
 	//gin.SetMode(gin.DebugMode)
 	router := controller.RegisterRouterMap()

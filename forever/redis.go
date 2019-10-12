@@ -13,6 +13,7 @@ func ConnectRedis(con *redisCon.RedisConfig) {
 	client = redis.NewClient(con.RedisOption)
 	logrus.Info("[redis]connect successfully...")
 }
+
 func DisConnectRedis() {
 	if e := client.Close(); e != nil {
 		logrus.Error("[redis]close failed...")

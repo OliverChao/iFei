@@ -32,7 +32,8 @@ func RegisterRouterMap() *gin.Engine {
 		m["s"] = "oliver loves annabelle~"
 	})
 
-	engine.GET("/get_reids", handlerFuncs.TestRedis)
+	engine.GET("/get_redis", handlerFuncs.TestRedis)
+	engine.POST("/markdown_load", handlerFuncs.TestLuteEngine)
 
 	api := engine.Group("/api")
 
