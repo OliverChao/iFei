@@ -25,6 +25,7 @@ func main() {
 	IFconBase := baseCon.LoadBaseConfig()
 	//logrus.SetLevel(IFconBase.LogLevel)
 	forever.MysqlRegister()
+
 	gin.SetMode(gin.DebugMode)
 	router := controller.RegisterRouterMap()
 	//IFconBase :=

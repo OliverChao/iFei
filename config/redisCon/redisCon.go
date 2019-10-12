@@ -10,3 +10,13 @@ var (
 		PoolSize: 10,
 	}
 )
+
+type RedisConfig struct {
+	RedisOption *redis.Options
+}
+
+func LoadRedisConfig() (redisConfig *RedisConfig) {
+	redisConfig = &RedisConfig{RedisOption: RedisOp}
+
+	return
+}

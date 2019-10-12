@@ -8,9 +8,9 @@ import (
 )
 
 var db *gorm.DB
-var err error
 
 func Connect(con *mysqlCon.MysqlConfig) {
+	var err error
 	db, err = gorm.Open("mysql", con.MysqlUri)
 	if err != nil {
 		logrus.Fatalf("[mysql] connect mysql error" + err.Error())
