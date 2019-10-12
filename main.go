@@ -1,9 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
+	"iFei/config/baseCon"
 	"iFei/controller"
+	"iFei/forever"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,23 +15,29 @@ import (
 )
 
 func init() {
-	log.SetLevel(log.DebugLevel)
+	//logrus.SetLevel(logrus.DebugLevel)
+	//iFcon := baseCon.InitIFcon()
+	logrus.SetLevel(logrus.InfoLevel)
 
 }
 
 func main() {
+	IFconBase := baseCon.LoadBaseConfig()
+	//logrus.SetLevel(IFconBase.LogLevel)
+	forever.MysqlRegister()
+	gin.SetMode(gin.DebugMode)
 	router := controller.RegisterRouterMap()
+	//IFconBase :=
 	server := &http.Server{
-		Addr:    "0.0.0.0:8080",
+		Addr:    fmt.Sprintf("%s:%d", IFconBase.Host, IFconBase.Port),
 		Handler: router,
 	}
 	ExitServerHandler(server)
 
 	if err := server.ListenAndServe(); err != nil {
 		//fmt.Println("serve listens failed: ", err)
-		log.Errorf("serve listens failed: %v", err)
+		logrus.Errorf("serve listens failed: %v", err)
 	}
-
 }
 
 func ExitServerHandler(server *http.Server) {
@@ -36,15 +46,13 @@ func ExitServerHandler(server *http.Server) {
 
 	go func() {
 		s := <-c
-		//fmt.Printf("[signal %v]exiting pipe now...\n", s)
-		log.Infof("[signal %v]exiting pipe now...", s)
+		logrus.Infof("[signal %v]exiting IFei now...", s)
 		if err := server.Close(); nil != err {
-			//fmt.Printf("server close failed:%v\n", err)
-			log.Errorf("server close failed:%v", err)
+			logrus.Errorf("server close failed:%v", err)
 		}
 
 		//Todo: resources should be disconnected like databases
-
+		forever.MysqlUnRegister()
 		os.Exit(0)
 	}()
 }

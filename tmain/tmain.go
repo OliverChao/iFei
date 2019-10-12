@@ -14,10 +14,17 @@ import (
 	"time"
 )
 
+func init() {
+
+	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+		return "ifei_" + defaultTableName
+	}
+}
+
 func main() {
-	testConServer()
+	//testConServer()
 	testConDB()
-	testRedis()
+	//testRedis()
 
 }
 
@@ -54,7 +61,7 @@ func testConDB() {
 	}
 	defer db.Close()
 
-	db.Table("models").DropTableIfExists(&model.Model{})
+	db.DropTableIfExists(&model.Model{})
 
 	db.AutoMigrate(&model.Model{})
 	if err = db.AutoMigrate(&model.Model{}).Error; err != nil {

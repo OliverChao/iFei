@@ -7,8 +7,9 @@ import (
 
 func RegisterRouterMap() *gin.Engine {
 	engine := gin.Default()
-	//engine.Use(gin.Recovery())
 
+	//engine := gin.New()
+	//engine.Use(gin.Recovery())
 	//engine.Use(gin.Logger())
 	//sessionRedis.NewStore()
 	//store := cookie.NewStore([]byte("secret"))
@@ -23,12 +24,29 @@ func RegisterRouterMap() *gin.Engine {
 		//var m map[string]string
 		m := make(map[string]interface{})
 		defer c.JSON(http.StatusOK, m)
+		m["test"] = "engine_test"
 		m["name"] = "oliver"
 		m["girlfriend"] = "annabelle"
 		m["age"] = 9999
 		m["s"] = "oliver loves annabelle~"
 
 	})
+	api := engine.Group("/api")
+
+	api.GET("/test_api", func(c *gin.Context) {
+		m := make(map[string]interface{})
+		defer c.JSON(http.StatusOK, m)
+		m["test"] = "api test"
+		m["name"] = "oliver"
+		m["girlfriend"] = "annabelle"
+		m["age"] = 9999
+		m["s"] = "oliver loves annabelle~"
+		m["zero data"] = map[string]interface{}{
+			"test_data": "annabelle is a lovely girl",
+		}
+	})
+
+	//engine.StaticFile()
 
 	return engine
 }
