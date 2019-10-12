@@ -2,12 +2,12 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"iFei/controller/handlerFuncs"
 	"net/http"
 )
 
 func RegisterRouterMap() *gin.Engine {
 	engine := gin.Default()
-
 	//engine := gin.New()
 	//engine.Use(gin.Recovery())
 	//engine.Use(gin.Logger())
@@ -20,6 +20,7 @@ func RegisterRouterMap() *gin.Engine {
 	//	HttpOnly: true,
 	//})
 	//engine.Use(sessions.Sessions("ifei", store))
+
 	engine.GET("/engine_test", func(c *gin.Context) {
 		//var m map[string]string
 		m := make(map[string]interface{})
@@ -29,8 +30,10 @@ func RegisterRouterMap() *gin.Engine {
 		m["girlfriend"] = "annabelle"
 		m["age"] = 9999
 		m["s"] = "oliver loves annabelle~"
-
 	})
+
+	engine.GET("/get_reids", handlerFuncs.TestRedis)
+
 	api := engine.Group("/api")
 
 	api.GET("/test_api", func(c *gin.Context) {

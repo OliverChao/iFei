@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/sirupsen/logrus"
 	"iFei/config/baseCon"
@@ -25,8 +24,9 @@ func main() {
 	IFconBase := baseCon.LoadBaseConfig()
 	//logrus.SetLevel(IFconBase.LogLevel)
 	forever.MysqlRegister()
+	forever.RedisRegister()
 
-	gin.SetMode(gin.DebugMode)
+	//gin.SetMode(gin.DebugMode)
 	router := controller.RegisterRouterMap()
 	//IFconBase :=
 	server := &http.Server{
@@ -41,6 +41,7 @@ func main() {
 	}
 }
 
+// yoooo~~~ close Server gracefully
 func ExitServerHandler(server *http.Server) {
 	c := make(chan os.Signal)
 	signal.Notify(c, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
@@ -54,6 +55,8 @@ func ExitServerHandler(server *http.Server) {
 
 		//Todo: resources should be disconnected like databases
 		forever.MysqlUnRegister()
+		forever.RedisUnRegister()
+
 		os.Exit(0)
 	}()
 }

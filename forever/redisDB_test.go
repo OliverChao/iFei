@@ -8,7 +8,7 @@ import (
 func TestConnectionRedis(t *testing.T) {
 	redisConfig := redisCon.LoadRedisConfig()
 
-	ConnectionRedis(redisConfig)
+	ConnectRedis(redisConfig)
 	client.FlushAll()
 	client.HSet("user:1:info", "age", 20)
 	get := client.HGet("user:1:info", "age")
@@ -16,5 +16,5 @@ func TestConnectionRedis(t *testing.T) {
 	if s != "20" {
 		t.Fail()
 	}
-	DisConnectionRedis()
+	DisConnectRedis()
 }

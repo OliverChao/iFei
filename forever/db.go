@@ -7,8 +7,10 @@ import (
 	"iFei/config/mysqlCon"
 )
 
+//db is the variable in this package
 var db *gorm.DB
 
+//connection mysql to make db can be used
 func Connect(con *mysqlCon.MysqlConfig) {
 	var err error
 	db, err = gorm.Open("mysql", con.MysqlUri)

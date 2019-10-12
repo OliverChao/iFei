@@ -8,12 +8,12 @@ import (
 
 var client *redis.Client
 
-func ConnectionRedis(con *redisCon.RedisConfig) {
+func ConnectRedis(con *redisCon.RedisConfig) {
 	//client := redis.NewClient{con.RedisOption}
 	client = redis.NewClient(con.RedisOption)
 	logrus.Info("[redis]connect successfully...")
 }
-func DisConnectionRedis() {
+func DisConnectRedis() {
 	if e := client.Close(); e != nil {
 		logrus.Error("[redis]close failed...")
 	} else {

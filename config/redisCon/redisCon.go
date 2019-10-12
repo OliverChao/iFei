@@ -11,6 +11,7 @@ var (
 	}
 )
 
+//redis config like mysql config struct
 type RedisConfig struct {
 	RedisOption *redis.Options
 }

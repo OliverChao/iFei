@@ -4,6 +4,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"iFei/config/baseCon"
 	"iFei/config/mysqlCon"
+	"iFei/config/redisCon"
 )
 
 func BaseConRegister() {
@@ -19,5 +20,10 @@ func MysqlRegister() {
 	//	logrus.Errorf("connect mysql error...")
 	//	return
 	//}
+}
+
+func RedisRegister() {
+	redisConfig := redisCon.LoadRedisConfig()
+	ConnectRedis(redisConfig)
 
 }
