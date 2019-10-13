@@ -22,6 +22,12 @@ func MysqlRegister() {
 	//}
 }
 
+func MysqlDropAll() {
+	IFMysqlCon := mysqlCon.LoadMysqlConfig()
+	Connect(IFMysqlCon)
+	DropAll(IFMysqlCon)
+}
+
 func RedisRegister() {
 	redisConfig := redisCon.LoadRedisConfig()
 	ConnectRedis(redisConfig)

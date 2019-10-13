@@ -29,6 +29,9 @@ func LoadMysqlConfig() (IFMysqlCon *MysqlConfig) {
 		Models: []interface{}{
 			&model.Model{},
 			&model.User{},
+			&model.Article{},
+			&model.Comment{},
+			&model.Tag{},
 		},
 	}
 	return

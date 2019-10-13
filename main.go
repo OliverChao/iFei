@@ -38,7 +38,6 @@ func main() {
 	ExitServerHandler(server)
 
 	if err := server.ListenAndServe(); err != nil {
-		//fmt.Println("serve listens failed: ", err)
 		logrus.Errorf("serve listens failed: %v", err)
 	}
 }

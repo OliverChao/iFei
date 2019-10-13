@@ -11,6 +11,8 @@ var (
 )
 var Markdown *lute.Lute
 
+// maybe lute engine can be a kind of mini service in docker
+//thus you can use requests to access it
 func LoadMarkdownEngine() {
 	Markdown = lute.New()
 	isLoad = true
