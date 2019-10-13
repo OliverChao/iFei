@@ -20,7 +20,9 @@ func RegisterRouterMap() *gin.Engine {
 	//	HttpOnly: true,
 	//})
 	//engine.Use(sessions.Sessions("ifei", store))
-
+	engine.Any("/", func(c *gin.Context) {
+		defer c.JSON(200, "Yoo~~~ Hello~~~ iFei~~~")
+	})
 	engine.GET("/engine_test", func(c *gin.Context) {
 		//var m map[string]string
 		m := make(map[string]interface{})
@@ -50,7 +52,8 @@ func RegisterRouterMap() *gin.Engine {
 		}
 	})
 
+	api.POST("/markdown", handlerFuncs.DealToMarkdown)
 	//engine.StaticFile()
-
+	api.POST("/post", handlerFuncs.PostArticle)
 	return engine
 }

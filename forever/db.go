@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"iFei/config/mysqlCon"
 	"iFei/model"
+	"strings"
 	"time"
 )
 
@@ -49,9 +51,6 @@ func DropAll(con *mysqlCon.MysqlConfig) {
 
 func CreateDemo() {
 	comment := model.Comment{
-		Model: model.Model{
-			ID: 1,
-		},
 		ArticleID: 1,
 		UserID:    1,
 		Content:   "yes~ you can",
@@ -59,7 +58,6 @@ func CreateDemo() {
 		PushedAt:  time.Now(),
 	}
 	article := model.Article{
-		Model:        model.Model{ID: 1},
 		PushedAt:     time.Now(),
 		Title:        "together forever",
 		Content:      "oliver loves annabelle forever~",
@@ -68,18 +66,15 @@ func CreateDemo() {
 		ViewCount:    0,
 		CommentCount: 0,
 		Path:         "",
-		Stared:       0,
+		Stared:       false,
 		Topped:       false,
 		UserID:       1,
 		Comments:     []model.Comment{comment},
 	}
+	//uuids, _ := uuid.NewV4()
+	article.UUID = strings.Replace(uuid.NewV4().String(), "-", "", -1)
+
 	user := model.User{
-		Model: model.Model{
-			ID:        1,
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
-			DeletedAt: nil,
-		},
 		Name:              "oliver",
 		IfeiKey:           "520annabelle",
 		TotalArticleCount: 2,

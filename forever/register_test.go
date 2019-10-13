@@ -24,7 +24,9 @@ func TestMysqlRegister(t *testing.T) {
 func TestMysqlFunction(t *testing.T) {
 
 	MysqlRegister()
-	QueryDemo()
+	//QueryDemo()
+	//MysqlDropAll()
+	CreateDemo()
 	MysqlUnRegister()
 }
 

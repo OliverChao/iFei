@@ -4,7 +4,10 @@ import "time"
 
 type Article struct {
 	Model
-	PushedAt     time.Time `json:"pushedAt"`
+	Md5Code string `json:"md5code"`
+	UUID    string `json:"uuid" gorm:"unique"`
+
+	PushedAt     time.Time `json:"pushed_at"`
 	Title        string    `gorm:"size:255" json:"title"`
 	Content      string    `gorm:"type:text" json:"content"`
 	Tags         string    `gorm:"type:text" json:"tags"`
@@ -13,7 +16,7 @@ type Article struct {
 	CommentCount int       `json:"commentCount"`
 
 	Path   string `sql:"index" gorm:"size:255" json:"path"`
-	Stared int    `sql:"index" json:"star"`
+	Stared bool   `sql:"index" json:"star"`
 	Topped bool   `json:"topped"`
 
 	UserID uint64 `json:"user_id"`
