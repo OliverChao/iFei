@@ -54,7 +54,7 @@ func ExitServerHandler(server *http.Server) {
 			logrus.Errorf("server close failed:%v", err)
 		}
 
-		//Todo: resources should be disconnected like databases
+		// unregister here
 		forever.MysqlUnRegister()
 		forever.RedisUnRegister()
 

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
+	"iFei/echo"
 	"iFei/forever"
 	"iFei/model"
 	"io/ioutil"
@@ -13,62 +14,73 @@ import (
 )
 
 func DealToMarkdown(c *gin.Context) {
-	//todo: rewirite this return data
-	retMap := make(map[string]interface{})
-	defer c.JSON(http.StatusOK, retMap)
+
+	//done : rewrite this return data
+	ret := echo.NewRetResult()
+	ret.Code = -1
+	defer c.JSON(http.StatusOK, ret)
 	markdownEngine, e := forever.GetMarkdownEngine()
 	if e != nil {
-		retMap["code"] = -1
-		retMap["msg"] = "cannot get markdown engine"
-		//c.JSON(404, nil)
+		ret.Msg = "cannot get markdown engine"
 		return
 	}
 
 	arg := map[string]interface{}{}
 	if err := c.BindJSON(&arg); nil != err {
-		retMap["code"] = -1
-		retMap["msg"] = "post data format error"
+		ret.Msg = "post data format error"
 		return
 	}
 
-	mtext := arg["text"].(string)
+	s, ok := arg["text"]
+	if !ok {
+		ret.Msg = "post data format error"
+		return
+	}
+	mtext := s.(string)
+
 	html, err := markdownEngine.MarkdownStr("", mtext)
 	if err != nil {
-		logrus.Error("[ioutil.ReadAll] " + err.Error())
+		logrus.Error("[MarkdownStr err] " + err.Error())
+		html = "MarkdownStr err"
+		return
 	}
-	retMap["data"] = html
-	//bytes, err := ioutil.ReadAll(c.Request.Body)
-	//html, e := markdownEngine.Markdown("", bytes)
+	//successfully return data
+	ret.Code = 1
+	ret.Data = html
+
 }
 
 func PostArticle(c *gin.Context) {
-	//todo: rewirite this return data
-	retMap := make(map[string]interface{})
-	defer c.JSON(http.StatusOK, retMap)
 
-	arg := map[string]interface{}{}
+	ret := echo.NewRetResult()
+	ret.Code = -1
+	defer c.JSON(http.StatusOK, ret)
+
+	//arg := map[string]interface{}{}
+	var arg echo.BindPostArticle
 	if err := c.BindJSON(&arg); nil != err {
-		retMap["code"] = -1
-		retMap["msg"] = "post data format error"
+		ret.Msg = "post data format error"
 		return
 	}
-
+	//logrus.Info(arg)
 	article := model.Article{
 		UUID:        strings.Replace(uuid.NewV4().String(), "-", "", -1),
 		PushedAt:    time.Now(),
-		Title:       arg["title"].(string),
-		Content:     arg["content"].(string),
-		Tags:        arg["tags"].(string),
-		Commentable: arg["commentable"].(bool),
-		Stared:      arg["stared"].(bool),
-		Topped:      arg["topped"].(bool),
+		Title:       arg.Title,
+		Content:     arg.Content,
+		Tags:        arg.Tags,
+		Commentable: arg.Commentable,
+		Stared:      arg.Stared,
+		Topped:      arg.Topped,
 
 		// Todo: 需要从session 的信息中获取 userid, 这里需要改
 		UserID: 1,
 	}
 	forever.AddArticle(&article)
-	retMap["code"] = 1
-	retMap["msg"] = "add successfully"
+
+	ret.Code = 1
+	ret.Msg = "success"
+
 }
 
 func TestRedis(c *gin.Context) {
