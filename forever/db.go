@@ -77,6 +77,7 @@ func CreateDemo() {
 	user := model.User{
 		Name:              "oliver",
 		IfeiKey:           "520annabelle",
+		Password:          "ce5ca673d13b36118d54a7cf13aeb0ca012383bf771e713421b4d1fd841f539a",
 		TotalArticleCount: 2,
 		Articles:          []model.Article{article},
 	}

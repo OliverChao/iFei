@@ -9,3 +9,5 @@ func GetArticleInfo() string {
 	}
 	return s
 }
+
+//func SaveLoginState()

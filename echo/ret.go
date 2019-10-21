@@ -27,4 +27,7 @@ type BindPostArticle struct {
 	Topped      bool   `json:"topped" binding:"required"`
 }
 
-//type Ans map[string]interface{}
+type BindLogin struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
