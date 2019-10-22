@@ -21,3 +21,7 @@ func DisConnectRedis() {
 		logrus.Info("[redis]close successfully")
 	}
 }
+
+func GetGlobalRedisClient() *redis.Client {
+	return client
+}

@@ -51,6 +51,19 @@ func RegisterRouterMap() *gin.Engine {
 	engine.POST("/markdown_load", handlerFuncs.TestLuteEngine)
 
 	engine.POST("/ifei/login", handlerFuncs.LoginIn)
+	engine.GET("ifei/logout", func(c *gin.Context) {
+		session := sessions.Default(c)
+		session.Options(sessions.Options{
+			Path:   "/",
+			MaxAge: -1,
+		})
+		session.Clear()
+		if err := session.Save(); nil != err {
+			logrus.Errorf("[logout] saves session failed: " + err.Error())
+		}
+
+		c.JSON(http.StatusOK, "clear cookie successfully")
+	})
 
 	engine.GET("/ifei/test_login", func(c *gin.Context) {
 		ret := echo.NewRetResult()
@@ -76,13 +89,23 @@ func RegisterRouterMap() *gin.Engine {
 		session.Set("token", "test token")
 		session.Set("va", user.Name)
 		e = session.Save()
-
 		if e != nil {
 			logrus.Error("cookie save error", e)
 			return
 		} else {
 			logrus.Info("cookie save successfully")
 		}
+
+		//todo: write login msg to redis server
+		newToken := echo.GenerateToken()
+		client := forever.GetGlobalRedisClient()
+		e = client.Set(username, newToken, -1).Err()
+		if e != nil {
+			logrus.Error("[redis] save login msg error")
+		} else {
+			logrus.Info("[redis] save login msg successfully")
+		}
+		//
 
 		ret.Msg = "verify successfully"
 		ret.Code = 1
