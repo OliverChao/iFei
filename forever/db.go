@@ -45,6 +45,10 @@ func DisconnectDB() {
 	}
 }
 
+func GetGlobalGormDB() *gorm.DB {
+	return db
+}
+
 func DropAll(con *mysqlCon.MysqlConfig) {
 	db.DropTableIfExists(con.Models...)
 }

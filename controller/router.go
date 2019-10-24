@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"iFei/controller/handlerFuncs"
-	"iFei/controller/middleware"
 	"iFei/echo"
 	"iFei/forever"
 	"net/http"
@@ -114,7 +113,7 @@ func RegisterRouterMap() *gin.Engine {
 	})
 	//engine
 	api := engine.Group("/api")
-	api.Use(middleware.LoginCheck)
+	//api.Use(middleware.LoginCheck)
 
 	api.GET("/", func(c *gin.Context) {
 		session := sessions.Default(c)

@@ -10,3 +10,18 @@ type User struct {
 
 	Articles []Article `gorm:"foreignkey:UserID"`
 }
+
+func (u *User) RetData() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["name"] = u.Name
+	m["upload"] = u.TotalArticleCount
+	m["_id"] = u.Model.ID
+	return m
+}
+
+//func (u *User)GetArticles()[]Article{
+//	// todo : add error control
+//	db := forever.GetGlobalGormDB()
+//	db.Model(&u).Related(&u.Articles)
+//	return u.Articles
+//}

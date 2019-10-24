@@ -11,9 +11,10 @@ type RetResult struct {
 
 func NewRetResult() (ret *RetResult) {
 	return &RetResult{
-		Code: 0,
-		Msg:  "",
-		Data: nil,
+		Code:  0,
+		Msg:   "",
+		Data:  nil,
+		Extra: nil,
 	}
 }
 
@@ -22,9 +23,9 @@ type BindPostArticle struct {
 	Title       string `json:"title" binding:"required"`
 	Content     string `json:"content" binding:"required"`
 	Tags        string `json:"tags" binding:"required"`
-	Commentable bool   `json:"commentable" binding:"required"`
-	Stared      bool   `json:"stared" binding:"required"`
-	Topped      bool   `json:"topped" binding:"required"`
+	Commentable bool   `json:"commentable"`
+	Stared      bool   `json:"stared"`
+	Topped      bool   `json:"topped"`
 }
 
 type BindLogin struct {

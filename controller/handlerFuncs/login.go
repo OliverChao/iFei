@@ -17,14 +17,13 @@ func LoginIn(c *gin.Context) {
 	ret.Code = -1
 	defer c.JSON(http.StatusOK, ret)
 
-	//todo :add RSA decrypt if encrypt by js
+	//todo :add RSA decrypt if encrypt by client
 
 	var arg echo.BindLogin
 	if err := c.BindJSON(&arg); err != nil {
 		ret.Msg = "post data format error"
 		return
 	}
-	//把 sha注册到全局会变快一点点吗
 	//
 	sha := sha256.New()
 	sha.Write([]byte(arg.Password))
@@ -40,21 +39,33 @@ func LoginIn(c *gin.Context) {
 	}
 
 	// return some information about this user
-	// todo ://change it
-	ret.Data = user
+	ret.Data = user.RetData()
+	//dataMap := user.RetData()
+	//dataMap["gen_time"] = time.Now().Unix()
+	////dataMap["expire"] =
+	//
+	////, _ := json.Marshal(dataMap)
+	//
+	//echo.TokenData{
+	//	Data: dataMap,
+	//	Sign: "",
+	//}
 
 	//todo : token
 	session := sessions.Default(c)
 	session.Set("token", "test token")
-	session.Set("va", user)
+	session.Set("va", user.Name)
 	e = session.Save()
 
 	if e != nil {
-		logrus.Error("cookie save error")
+		logrus.Error("[LoginIn] cookie save error")
 		return
 	} else {
-		logrus.Info("cookie save successfully")
+		logrus.Info("[LoginIn] cookie save successfully")
 	}
+
+	ret.Msg = "verify successfully"
+	ret.Code = 1
 
 	//extraData := make(map[string]interface{})
 	//extraData["info"] =
